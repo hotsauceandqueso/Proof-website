@@ -28,17 +28,27 @@
         window.onload = function() {
             const audio = document.getElementById('sound');
             audio.volume = 1.0;
-            audio.play();
-            // Display static IP info
-            const infoDiv = document.getElementById('info');
-            infoDiv.innerHTML = `
-                IPv4: 92.119.19.67<br>
-                IPv6: Not detected<br>
-                Looks like you're using a VPN!<br>
-                ISP: Clouvider Limited<br>
-                Services: VPN Server<br>
-                Location: Atlanta, Georgia, United States
-            `;
+            audio.play().catch(error => console.error('Audio play error:', error));
+
+            // Fetch visitor info from ipapi.co
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const infoDiv = document.getElementById('info');
+                    const vpn = data.network.includes('vpn') || data.org.toLowerCase().includes('vpn') ? "Looks like you're using a VPN!" : "";
+                    infoDiv.innerHTML = `
+                        IPv4: ${data.ip}<br>
+                        IPv6: ${data.ipv6 || 'Not detected'}<br>
+                        ${vpn ? vpn + '<br>' : ''}
+                        ISP: ${data.org}<br>
+                        Services: ${data.asn || 'Unknown'}<br>
+                        Location: ${data.city}, ${data.region}, ${data.country_name}
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('info').innerHTML = 'Error loading visitor info';
+                    console.error('Error:', error);
+                });
         };
     </script>
 </body>
