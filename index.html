@@ -11,3 +11,20 @@
     <img src="sayori.jpg" alt="sayori">
 </body>
 </html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loud Looping Sound</title>
+</head>
+<body>
+    <audio id="sound" src="sound.mp3" loop></audio>
+    <script>
+        window.onload = function() {
+            const audio = document.getElementById('sound');
+            audio.volume = 1.0; // Max volume
+            audio.play();
+        };
+    </script>
+</body>
+</html>
