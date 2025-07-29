@@ -3,18 +3,50 @@
 <head>
     <title>sayori</title>
     <style>
-        body { margin: 0; }
+        body { 
+            margin: 0; 
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: black;
+        }
         img { width: 100vw; height: 100vh; object-fit: contain; }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <img src="sayori.jpg" alt="sayori">
+    <div id="info">Loading visitor info...</div>
     <audio id="sound" src="sound.mp3" loop></audio>
+
     <script>
         window.onload = function() {
             const audio = document.getElementById('sound');
-            audio.volume = 1.0; // Max volume
+            audio.volume = 1.0;
             audio.play();
+
+            // Fetch visitor info
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const infoDiv = document.getElementById('info');
+                    infoDiv.innerHTML = `
+                        IPv4: ${data.ip}<br>
+                        IPv6: ${data.ipv6 || 'Not available'}<br>
+                        ISP: ${data.org}<br>
+                        Location: ${data.city}, ${data.region}, ${data.country_name}
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('info').innerHTML = 'Error loading visitor info';
+                    console.error('Error:', error);
+                });
         };
     </script>
 </body>
