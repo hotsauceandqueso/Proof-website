@@ -3,8 +3,8 @@
 <head>
     <title>sayori</title>
     <style>
-        body { 
-            margin: 0; 
+        body {
+            margin: 0;
             font-family: Arial, sans-serif;
             color: white;
             background-color: black;
@@ -24,29 +24,21 @@
     <img src="sayori.jpg" alt="sayori">
     <div id="info">Loading visitor info...</div>
     <audio id="sound" src="sound.mp3" loop></audio>
-
     <script>
         window.onload = function() {
             const audio = document.getElementById('sound');
             audio.volume = 1.0;
             audio.play();
-
-            // Fetch visitor info
-            fetch('https://ipapi.co/json/')
-                .then(response => response.json())
-                .then(data => {
-                    const infoDiv = document.getElementById('info');
-                    infoDiv.innerHTML = `
-                        IPv4: ${data.ip}<br>
-                        IPv6: ${data.ipv6 || 'Not available'}<br>
-                        ISP: ${data.org}<br>
-                        Location: ${data.city}, ${data.region}, ${data.country_name}
-                    `;
-                })
-                .catch(error => {
-                    document.getElementById('info').innerHTML = 'Error loading visitor info';
-                    console.error('Error:', error);
-                });
+            // Display static IP info
+            const infoDiv = document.getElementById('info');
+            infoDiv.innerHTML = `
+                IPv4: 92.119.19.67<br>
+                IPv6: Not detected<br>
+                Looks like you're using a VPN!<br>
+                ISP: Clouvider Limited<br>
+                Services: VPN Server<br>
+                Location: Atlanta, Georgia, United States
+            `;
         };
     </script>
 </body>
